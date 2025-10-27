@@ -1,3 +1,3 @@
 # SWE-project
 
-** what i have done is just loh in and sign in 
+* what i have done is just login, sign up and reset password
