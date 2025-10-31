@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My To-Do List & Quick Notes</title>
+    <style>
+        :root {
+            --primary-color: #2c7da0; 
+            --light-primary: #38a3a5;
+            --text-color: #333;
+            --white: #fff;
+            --background-desktop: #f0f2f5;
+            --secondary-bg: #e6f3f8; 
+            --shadow-subtle: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-desktop);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .todo-container {
+            width: 100%;
+            max-width: 500px; /* Constrain size for mobile/card look */
+            background-color: var(--white);
+            min-height: 100vh; /* Full height on mobile */
+            padding-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* --- HEADER --- */
+        .page-header {
+            background-color: var(--primary-color);
+            height: 100px;
+            border-bottom-left-radius: 50px;
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .back-arrow {
+            color: var(--white);
+            font-size: 1.5em;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+        
+        /* --- NEW TASK FORM --- */
+        #new-task-form {
+            display: flex;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        #new-task-input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px 0 0 20px;
+            font-size: 1em;
+            outline: none;
+        }
+
+        #add-task-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 0 20px 20px 0;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        #add-task-btn:hover {
+            background-color: var(--light-primary);
+        }
+        
+        /* --- TASK LIST STYLING --- */
+        #task-list {
+            list-style: none;
+            padding: 0 20px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        .task-checkbox-wrapper {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            margin-right: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .task-item.completed .task-checkbox-wrapper {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .task-item.completed .task-description {
+            text-decoration: line-through;
+            color: #999;
+        }
+        
+        .task-check-mark {
+            color: var(--white);
+            font-size: 1.5em;
+            display: none; /* Hidden by default */
+        }
+        
+        .task-item.completed .task-check-mark {
+            display: block; /* Show check mark when complete */
+        }
+
+        .task-details {
+            flex-grow: 1;
+        }
+        
+        .task-description {
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .task-due-date {
+            font-size: 0.85em;
+            color: var(--light-primary);
+            background-color: var(--secondary-bg);
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            font-size: 1.2em;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+        
+        .delete-btn:hover {
+            opacity: 1;
+        }
+        
+        /* --- QUICK NOTES SECTION --- */
+        .notes-section {
+            padding: 20px;
+        }
+        
+        .notes-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+        
+        #quick-notes {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            font-size: 1em;
+            resize: vertical;
+            background-color: var(--secondary-bg);
+            outline: none;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        /* --- DESKTOP RESPONSIVENESS --- */
+        @media (min-width: 768px) {
+            body {
+                align-items: center;
+                padding: 40px;
+            }
+            .todo-container {
+                max-width: 800px;
+                min-height: auto;
+                border-radius: 15px;
+            }
+            .page-header {
+                height: 80px;
+                border-bottom-left-radius: 15px;
+                margin-bottom: 30px;
+            }
+            .page-title {
+                margin-top: 10px;
+                margin-bottom: 30px;
+            }
+            
+            #new-task-form {
+                padding: 0 40px 30px;
+            }
+            
+            #task-list {
+                padding: 0 40px;
+            }
+            
+            .notes-section {
+                padding: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="todo-container">
+        
+        <div class="page-header">
+            <a href="dashboard.html" class="back-arrow"> &lt; </a>
+        </div>
+        
+        <h1 class="page-title">My To Do List</h1>
+        
+        <form id="new-task-form">
+            <input type="text" id="new-task-input" placeholder="Add a new task (e.g., Study SWE 363 by Oct 20)" required>
+            <button type="submit" id="add-task-btn">Add</button>
+        </form>
+        
+        <ul id="task-list">
+            <li class="task-item" data-due="Oct 15">
+                <div class="task-checkbox-wrapper">
+                    <span class="task-check-mark">✓</span>
+                </div>
+                <div class="task-details">
+                    <p class="task-description">Submit math assignment</p>
+                    <span class="task-due-date">due date: Oct 15</span>
+                </div>
+                <button class="delete-btn">X</button>
+            </li>
+        </ul>
+
+        <div class="notes-section">
+            <h2 class="notes-title">Quick Notes</h2>
+            <textarea id="quick-notes" placeholder="Enter your notes here... (Notes save automatically)"></textarea>
+        </div>
+
+    </div>
+
+    <script>
+        const form = document.getElementById('new-task-form');
+        const taskList = document.getElementById('task-list');
+        const noteArea = document.getElementById('quick-notes');
+
+        const getTasks = () => JSON.parse(localStorage.getItem('tasks')) || [];
+        const saveTasks = (tasks) => localStorage.setItem('tasks', JSON.stringify(tasks));
+        
+        // --- Render Functions ---
+        function renderTasks() {
+            const tasks = getTasks();
+            taskList.innerHTML = ''; // Clear existing list
+
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.className = `task-item ${task.completed ? 'completed' : ''}`;
+                li.setAttribute('data-index', index);
+
+                // --- HTML for a Single Task Item ---
+                li.innerHTML = `
+                    <div class="task-checkbox-wrapper">
+                        <span class="task-check-mark">✓</span>
+                    </div>
+                    <div class="task-details">
+                        <p class="task-description">${task.description}</p>
+                        ${task.dueDate ? `<span class="task-due-date">due date: ${task.dueDate}</span>` : ''}
+                    </div>
+                    <button class="delete-btn">X</button>
+                `;
+                
+                taskList.appendChild(li);
+            });
+            
+            // Reattach event listeners to the new elements
+            attachEventListeners();
+        }
+        
+        // --- Task Parsing Logic ---
+        function parseTaskInput(input) {
+            const dateRegex = /(by|due|on)\s*(\w+\s+\d{1,2})|(\w+\s+\d{1,2})$/i;
+            const match = input.match(dateRegex);
+            
+            if (match) {
+                let dueDate = match[2] || match[3];
+                // Clean the date format if needed (e.g., 'Oct 15')
+                
+                const description = input.replace(match[0], '').trim();
+                return { 
+                    description: description || input, 
+                    dueDate: dueDate 
+                };
+            }
+            return { description: input, dueDate: null };
+        }
+
+        // --- Event Handlers ---
+        
+        function addTask(event) {
+            event.preventDefault();
+            const inputField = document.getElementById('new-task-input');
+            const inputValue = inputField.value.trim();
+
+            if (inputValue === '') return;
+
+            const { description, dueDate } = parseTaskInput(inputValue);
+
+            const tasks = getTasks();
+            tasks.push({
+                description,
+                dueDate,
+                completed: false
+            });
+            saveTasks(tasks);
+            inputField.value = ''; // Clear input
+            renderTasks();
+        }
+
+        function toggleComplete(e) {
+            const wrapper = e.target.closest('.task-checkbox-wrapper');
+            if (!wrapper) return;
+
+            const listItem = wrapper.closest('.task-item');
+            const index = listItem.getAttribute('data-index');
+
+            const tasks = getTasks();
+            tasks[index].completed = !tasks[index].completed;
+            saveTasks(tasks);
+            renderTasks();
+        }
+
+        function deleteTask(e) {
+            if (!e.target.classList.contains('delete-btn')) return;
+
+            const listItem = e.target.closest('.task-item');
+            const index = listItem.getAttribute('data-index');
+
+            const tasks = getTasks();
+            tasks.splice(index, 1); // Remove the task at the given index
+            saveTasks(tasks);
+            renderTasks();
+        }
+        
+        function saveNotes() {
+            localStorage.setItem('quickNotes', noteArea.value);
+        }
+
+        function loadNotes() {
+            noteArea.value = localStorage.getItem('quickNotes') || '';
+        }
+
+        function attachEventListeners() {
+            // Event delegation for checkbox and delete button
+            taskList.addEventListener('click', toggleComplete);
+            taskList.addEventListener('click', deleteTask);
+        }
+        
+        // --- Initialization ---
+        form.addEventListener('submit', addTask);
+        noteArea.addEventListener('input', saveNotes); // Auto-save notes
+
+        loadNotes();
+        renderTasks();
+
+    </script>
+</body>
+</html>

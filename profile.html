@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Combined CSS for self-contained, responsive styling -->
+    <style>
+        :root {
+            --primary-color: #2c7da0; 
+            --light-primary: #38a3a5;
+            --text-color: #333;
+            --white: #fff;
+            --background-desktop: #f0f2f5;
+            --border-color: #eee;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-desktop);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 500px; /* Constrain size for mobile/card look */
+            background-color: var(--white);
+            min-height: 100vh; /* Full height on mobile */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding-bottom: 70px; 
+        }
+        
+        /* --- HEADER --- */
+        .page-header {
+            background-color: var(--primary-color);
+            height: 120px;
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-arrow {
+            color: var(--white);
+            font-size: 1.5em;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .profile-heading {
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+        
+        /* --- PROFILE CARD STYLING --- */
+        .profile-card {
+            padding: 20px;
+            margin: 20px;
+            background-color: var(--secondary-bg, #fcfcfc);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- LIST ITEM STYLING (The core info display) --- */
+        .info-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .info-label-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .item-icon {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-right: 15px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .info-label {
+            font-weight: 600;
+            font-size: 1em;
+            color: var(--text-color);
+        }
+
+        .info-value {
+            color: #666;
+            font-size: 0.9em;
+            text-align: right;
+            margin-left: 20px;
+        }
+
+        .action-arrow {
+            color: #ccc;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* --- EDIT MODE FORM STYLING --- */
+        #edit-profile-form {
+            display: none; /* Hidden by default */
+            padding: 20px;
+        }
+        
+        #edit-profile-form.active {
+            display: block;
+        }
+
+        .form-input-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+        
+        .form-input-group input, .form-input-group select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        /* --- BUTTONS --- */
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-primary);
+        }
+        
+        #edit-btn {
+            margin-top: 30px;
+        }
+
+        /* --- DESKTOP RESPONSIVENESS --- */
+        @media (min-width: 768px) {
+            body {
+                align-items: center; /* Center card vertically */
+            }
+            .profile-container {
+                max-width: 800px;
+                min-height: auto;
+                border-radius: 15px;
+            }
+            .page-header {
+                height: 80px;
+                border-radius: 15px 15px 0 0;
+            }
+            .profile-card {
+                padding: 40px;
+                margin: 40px;
+            }
+            .info-item {
+                padding: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        
+        <div class="page-header">
+            <a href="dashboard.html" class="back-arrow"> &lt; </a>
+        </div>
+        
+        <h1 class="profile-heading">Personal Information</h1>
+        
+        <!-- DISPLAY MODE -->
+        <div id="display-mode" class="profile-card">
+            
+            <ul class="info-list">
+                
+                <li class="info-item">
+                    <div class="info-label-group">
+                        <span class="item-icon">👤</span>
+                        <span class="info-label">Name</span>
+                    </div>
+                    <div class="info-value" id="display-name">Mohammed Abdullah</div>
+                    <span class="action-arrow">&gt;</span>
+                </li>
+
+                <li class="info-item">
+                    <div class="info-label-group">
+                        <span class="item-icon">📞</span>
+                        <span class="info-label">Phone Number</span>
+                    </div>
+                    <div class="info-value" id="display-phone">+966 500 050 055</div>
+                    <span class="action-arrow">&gt;</span>
+                </li>
+
+                <li class="info-item">
+                    <div class="info-label-group">
+                        <span class="item-icon">📧</span>
+                        <span class="info-label">Email</span>
+                    </div>
+                    <!-- Email is usually not editable -->
+                    <div class="info-value" id="display-email">mohammed@kfupm.edu.sa</div>
+                    <span class="action-arrow">&gt;</span>
+                </li>
+                
+                <li class="info-item action-link">
+                    <div class="info-label-group">
+                        <span class="item-icon">🔒</span>
+                        <span class="info-label">Change your password</span>
+                    </div>
+                    <span class="info-value action-arrow">&gt;</span>
+                </li>
+
+                <li class="info-item">
+                    <div class="info-label-group">
+                        <span class="item-icon">♂️/♀️</span>
+                        <span class="info-label">Gender</span>
+                    </div>
+                    <div class="info-value" id="display-gender">Male</div>
+                    <span class="action-arrow">&gt;</span>
+                </li>
+                
+                <li class="info-item">
+                    <div class="info-label-group">
+                        <span class="item-icon">🎂</span>
+                        <span class="info-label">Date of birth</span>
+                    </div>
+                    <div class="info-value" id="display-dob">11-05-2003</div>
+                    <span class="action-arrow">&gt;</span>
+                </li>
+
+            </ul>
+            
+            <button id="edit-btn" class="btn-primary">Edit Profile</button>
+        </div>
+        
+        <form id="edit-profile-form" class="profile-card">
+            
+            <div class="form-input-group">
+                <label for="input-name">Name</label>
+                <input type="text" id="input-name" required>
+            </div>
+            
+            <div class="form-input-group">
+                <label for="input-phone">Phone Number</label>
+                <input type="tel" id="input-phone">
+            </div>
+            
+            <div class="form-input-group">
+                <label for="input-gender">Gender</label>
+                <select id="input-gender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-input-group">
+                <label for="input-dob">Date of Birth</label>
+                <input type="date" id="input-dob">
+            </div>
+
+            <button type="submit" class="btn-primary">Save Changes</button>
+            <button type="button" id="cancel-btn" class="btn-primary" style="background-color: #ff4d4d; margin-top: 10px;">Cancel</button>
+
+        </form>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const editBtn = document.getElementById('edit-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const displayMode = document.getElementById('display-mode');
+        const editForm = document.getElementById('edit-profile-form');
+        const saveForm = document.getElementById('edit-profile-form');
+
+        let userData = {
+            name: "Mohammed Abdullah",
+            phone: "+966 500 050 055",
+            email: "mohammed@kfupm.edu.sa",
+            gender: "Male",
+            dob: "2003-05-11" // YYYY-MM-DD for date input
+        };
+        
+        function renderDisplayMode() {
+            document.getElementById('display-name').textContent = userData.name;
+            document.getElementById('display-phone').textContent = userData.phone;
+            document.getElementById('display-email').textContent = userData.email;
+            document.getElementById('display-gender').textContent = userData.gender;
+            
+            // Format DOB for display (DD-MM-YYYY)
+            const [year, month, day] = userData.dob.split('-');
+            document.getElementById('display-dob').textContent = `${day}-${month}-${year}`;
+
+            // Switch views
+            displayMode.style.display = 'block';
+            editForm.style.display = 'none';
+        }
+
+        function openEditMode() {
+            // Populate form fields with current data
+            document.getElementById('input-name').value = userData.name;
+            document.getElementById('input-phone').value = userData.phone;
+            document.getElementById('input-gender').value = userData.gender;
+            document.getElementById('input-dob').value = userData.dob;
+
+            // Switch views
+            displayMode.style.display = 'none';
+            editForm.style.display = 'block';
+        }
+        
+        function saveProfile(event) {
+            event.preventDefault();
+
+            // 1. Collect new data from the form
+            const newName = document.getElementById('input-name').value.trim();
+            const newPhone = document.getElementById('input-phone').value.trim();
+            const newGender = document.getElementById('input-gender').value;
+            const newDob = document.getElementById('input-dob').value;
+            
+            // 2. Update the local userData object (Simulated Save to Database)
+            userData.name = newName;
+            userData.phone = newPhone;
+            userData.gender = newGender;
+            userData.dob = newDob;
+
+            // 3. Re-render the display mode
+            renderDisplayMode();
+        }
+
+        // --- EVENT LISTENERS ---
+        editBtn.addEventListener('click', openEditMode);
+        cancelBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            renderDisplayMode(); // Just switch back to display mode
+        });
+        saveForm.addEventListener('submit', saveProfile);
+
+        renderDisplayMode();
+    </script>
+</body>
+</html>

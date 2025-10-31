@@ -1,11 +1,6 @@
-/* ------------------------------------- */
-/* Import shared variables and styles */
-/* ------------------------------------- */
+
 @import url('signup.css');
 
-/* ------------------------------------- */
-/* Root variables (same as signup page) */
-/* ------------------------------------- */
 :root {
     --primary-color: #2c7da0; 
     --text-color: #333;
@@ -102,9 +97,7 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-/* ------------------------------------- */
 /* Helper options row */
-/* ------------------------------------- */
 .helper-options-row {
     display: flex;
     justify-content: space-between;
@@ -133,9 +126,7 @@ body {
     font-size: 0.9em;
 }
 
-/* ------------------------------------- */
 /* Buttons */
-/* ------------------------------------- */
 .button-group {
     display: flex;
     gap: 20px;

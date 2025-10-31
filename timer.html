@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Timer</title>
+<style>
+/* ========================================================= */
+/* ROOT VARIABLES (Matching Dashboard Theme)                 */
+/* ========================================================= */
+:root {
+  --primary-color: #2c7da0;
+  --text-color: #333;
+  --white: #fff;
+  --background-desktop: #f0f2f5;
+}
+
+/* ========================================================= */
+/* GLOBAL RESET & BODY                                       */
+/* ========================================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: var(--background-desktop);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+/* ========================================================= */
+/* TIMER CONTAINER (Dashboard-Like Layout)                   */
+/* ========================================================= */
+.timer-container {
+  width: 100%;
+  max-width: 520px;
+  background-color: var(--white);
+  min-height: 100vh;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 0 0 20px 20px;
+  overflow-x: hidden;
+  padding-bottom: 40px;
+}
+
+/* ========================================================= */
+/* HEADER BAR                                                */
+/* ========================================================= */
+.top-header-bar {
+  background-color: var(--primary-color);
+  height: 160px;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  margin-bottom: 30px;
+}
+
+/* ========================================================= */
+/* TIMER DISPLAY                                              */
+/* ========================================================= */
+.timer-display {
+  width: 260px;
+  height: 260px;
+  margin: 40px auto;
+  border-radius: 50%;
+  background: radial-gradient(circle at top left, var(--primary-color), #4ba3c3);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border: 5px solid rgba(255, 255, 255, 0.6);
+  animation: pulse 3s infinite;
+}
+
+.time-remaining {
+  font-size: 3.5em;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.time-total {
+  font-size: 1.2em;
+  opacity: 0.85;
+}
+
+/* ========================================================= */
+/* BUTTONS                                                   */
+/* ========================================================= */
+.controls-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.controls-group button {
+  background: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 22px;
+  font-size: 1.05em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.controls-group button:hover {
+  background: #3b8fb9;
+  transform: translateY(-2px);
+}
+
+/* ========================================================= */
+/* NEW TIMER INPUT GROUP                                     */
+/* ========================================================= */
+.new-timer-group {
+  background: var(--primary-color);
+  color: var(--white);
+  border-radius: 15px;
+  padding: 15px 25px;
+  max-width: 350px;
+  margin: 0 auto 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.new-timer-group label {
+  font-weight: 600;
+}
+
+.time-input-fields input {
+  width: 50px;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 0;
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.time-input-fields input:focus {
+  outline: none;
+  background: #f0f9ff;
+}
+
+/* ========================================================= */
+/* BACK BUTTON                                               */
+/* ========================================================= */
+#back-btn {
+  display: block;
+  margin: 25px auto 0;
+  background: #495057;
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 25px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+
+#back-btn:hover {
+  background: #343a40;
+  transform: scale(1.05);
+}
+
+/* ========================================================= */
+/* ANIMATIONS                                                */
+/* ========================================================= */
+@keyframes pulse {
+  0% { box-shadow: 0 0 20px rgba(0, 183, 255, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(0, 183, 255, 0.6); }
+  100% { box-shadow: 0 0 20px rgba(0, 183, 255, 0.3); }
+}
+
+/* ========================================================= */
+/* RESPONSIVE (Desktop Enhancement)                          */
+/* ========================================================= */
+@media (min-width: 768px) {
+  .timer-container {
+    max-width: 1000px;
+    min-height: 90vh;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    padding-bottom: 40px;
+  }
+
+  .timer-display {
+    width: 300px;
+    height: 300px;
+  }
+
+  .time-remaining {
+    font-size: 4.5em;
+  }
+
+  .time-total {
+    font-size: 1.4em;
+  }
+}
+</style>
+</head>
+<body>
+<div class="timer-container">
+  <div class="top-header-bar"></div>
+
+  <div class="timer-display">
+    <div id="time-display" class="time-remaining">10:00</div>
+    <div id="total-time-display" class="time-total">25min</div>
+  </div>
+
+  <div class="controls-group">
+    <button id="reset-btn">Reset</button>
+    <button id="stop-btn">Stop</button>
+    <button id="start-btn">Start</button>
+  </div>
+
+  <form id="set-timer-form" class="new-timer-group">
+    <label>New:</label>
+    <div class="time-input-fields">
+      <input type="number" id="input-h" placeholder="H" min="0" max="99" value="0">
+      <label>H</label>
+      <input type="number" id="input-m" placeholder="M" min="0" max="59" value="25">
+      <label>M</label>
+      <input type="number" id="input-s" placeholder="S" min="0" max="59" value="0">
+      <label>S</label>
+    </div>
+  </form>
+
+  <button id="back-btn" onclick="window.location.href='dashboard.html'">Back</button>
+</div>
+
+<script>
+const timeDisplay = document.getElementById('time-display');
+const totalTimeDisplay = document.getElementById('total-time-display');
+const startBtn = document.getElementById('start-btn');
+const stopBtn = document.getElementById('stop-btn');
+const resetBtn = document.getElementById('reset-btn');
+const form = document.getElementById('set-timer-form');
+const inputH = document.getElementById('input-h');
+const inputM = document.getElementById('input-m');
+const inputS = document.getElementById('input-s');
+
+let interval;
+let totalTimeSeconds = 1500;
+let timeRemainingSeconds = 1500;
+
+function formatTime(seconds) {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  return h > 0
+    ? `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+    : `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+function updateDisplay() {
+  timeDisplay.textContent = formatTime(timeRemainingSeconds);
+  totalTimeDisplay.textContent = `${Math.floor(totalTimeSeconds / 60)}min`;
+}
+
+function countdown() {
+  if (timeRemainingSeconds <= 0) {
+    clearInterval(interval);
+    interval = null;
+    alert("Time's up!");
+    return;
+  }
+  timeRemainingSeconds--;
+  updateDisplay();
+}
+
+startBtn.addEventListener('click', () => {
+  if (!interval && timeRemainingSeconds > 0) {
+    interval = setInterval(countdown, 1000);
+    startBtn.textContent = 'Running';
+    startBtn.style.background = '#3b8fb9';
+  }
+});
+
+stopBtn.addEventListener('click', () => {
+  clearInterval(interval);
+  interval = null;
+  startBtn.textContent = 'Resume';
+  startBtn.style.background = 'var(--primary-color)';
+});
+
+resetBtn.addEventListener('click', () => {
+  clearInterval(interval);
+  interval = null;
+  timeRemainingSeconds = totalTimeSeconds;
+  updateDisplay();
+  startBtn.textContent = 'Start';
+  startBtn.style.background = 'var(--primary-color)';
+});
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const h = parseInt(inputH.value) || 0;
+  const m = parseInt(inputM.value) || 0;
+  const s = parseInt(inputS.value) || 0;
+  const total = h * 3600 + m * 60 + s;
+  if (total > 0) {
+    totalTimeSeconds = total;
+    timeRemainingSeconds = total;
+    updateDisplay();
+  } else {
+    alert('Please set a time greater than zero.');
+  }
+});
+
+updateDisplay();
+</script>
+</body>
+</html>
