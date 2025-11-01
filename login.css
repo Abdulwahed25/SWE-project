@@ -33,7 +33,8 @@ body {
 /* Login container (same size as signup) */
 /* ------------------------------------- */
 .login-container {
-    width: 100%;
+    text-align: center;
+    width: 200%;
     max-width: 450px;
     background: var(--white);
     overflow: hidden;

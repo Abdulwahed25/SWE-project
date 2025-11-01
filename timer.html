@@ -6,36 +6,37 @@
 <title>Study Timer</title>
 <style>
 /* ========================================================= */
-/* ROOT VARIABLES (Matching Dashboard Theme)                 */
+/* ROOT VARIABLES (Dashboard Theme)                          */
 /* ========================================================= */
 :root {
   --primary-color: #2c7da0;
   --text-color: #333;
   --white: #fff;
   --background-desktop: #f0f2f5;
+  --accent-color: #4ba3c3;
 }
 
 /* ========================================================= */
-/* GLOBAL RESET & BODY                                       */
+/* GLOBAL RESET & BODY LAYOUT                                */
 /* ========================================================= */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
 
 body {
-  background-color: var(--background-desktop);
-  color: var(--text-color);
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  background-color: var(--background-desktop);
+  color: var(--text-color);
   min-height: 100vh;
 }
 
 /* ========================================================= */
-/* TIMER CONTAINER (Dashboard-Like Layout)                   */
+/* MAIN TIMER CONTAINER                                      */
 /* ========================================================= */
 .timer-container {
   width: 100%;
@@ -43,80 +44,92 @@ body {
   background-color: var(--white);
   min-height: 100vh;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 40px 40px;
   overflow-x: hidden;
-  padding-bottom: 40px;
+  padding-bottom: 60px;
 }
 
 /* ========================================================= */
-/* HEADER BAR                                                */
+/* HEADER SECTION                                            */
 /* ========================================================= */
 .top-header-bar {
   background-color: var(--primary-color);
-  height: 160px;
+  height: 180px;
   border-bottom-left-radius: 40px;
   border-bottom-right-radius: 40px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  margin-bottom: 30px;
 }
 
 /* ========================================================= */
-/* TIMER DISPLAY                                              */
+/* TIMER DISPLAY (Circle)                                    */
 /* ========================================================= */
 .timer-display {
-  width: 260px;
-  height: 260px;
-  margin: 40px auto;
+  width: 270px;
+  height: 270px;
+  margin: 50px auto 40px;
   border-radius: 50%;
-  background: radial-gradient(circle at top left, var(--primary-color), #4ba3c3);
+  background: radial-gradient(circle at top left, var(--primary-color), var(--accent-color));
   color: var(--white);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  border: 5px solid rgba(255, 255, 255, 0.6);
-  animation: pulse 3s infinite;
+  border: 5px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
 .time-remaining {
   font-size: 3.5em;
   font-weight: bold;
-  letter-spacing: 1px;
 }
 
 .time-total {
   font-size: 1.2em;
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 /* ========================================================= */
-/* BUTTONS                                                   */
+/* CONTROL BUTTONS                                           */
 /* ========================================================= */
 .controls-group {
   display: flex;
   justify-content: center;
   gap: 15px;
-  margin-bottom: 25px;
   flex-wrap: wrap;
+  margin: 0 auto 30px;
+  width: 85%;
 }
 
 .controls-group button {
+  flex: 1;
+  min-width: 100px;
   background: var(--primary-color);
   color: var(--white);
   border: none;
   border-radius: 12px;
-  padding: 10px 22px;
+  padding: 12px 20px;
   font-size: 1.05em;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .controls-group button:hover {
-  background: #3b8fb9;
+  background: var(--accent-color);
   transform: translateY(-2px);
+}
+
+#reset-btn {
+  background-color: #f0ad4e;
+}
+
+#stop-btn {
+  background-color: #dc3545;
+}
+
+#start-btn {
+  background-color: #4CAF50;
 }
 
 /* ========================================================= */
@@ -125,7 +138,7 @@ body {
 .new-timer-group {
   background: var(--primary-color);
   color: var(--white);
-  border-radius: 15px;
+  border-radius: 20px;
   padding: 15px 25px;
   max-width: 350px;
   margin: 0 auto 25px;
@@ -141,11 +154,11 @@ body {
 }
 
 .time-input-fields input {
-  width: 50px;
+  width: 55px;
   text-align: center;
   border: none;
-  border-radius: 6px;
-  padding: 6px 0;
+  border-radius: 8px;
+  padding: 7px 0;
   font-size: 1em;
   font-weight: 600;
   color: var(--primary-color);
@@ -156,12 +169,27 @@ body {
   background: #f0f9ff;
 }
 
+#set-time-btn {
+  background-color: #ffc107;
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#set-time-btn:hover {
+  background-color: #ffca2c;
+}
+
 /* ========================================================= */
 /* BACK BUTTON                                               */
 /* ========================================================= */
 #back-btn {
   display: block;
-  margin: 25px auto 0;
+  margin: 30px auto 0;
   background: #495057;
   color: var(--white);
   border: none;
@@ -175,41 +203,22 @@ body {
 
 #back-btn:hover {
   background: #343a40;
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
 /* ========================================================= */
-/* ANIMATIONS                                                */
-/* ========================================================= */
-@keyframes pulse {
-  0% { box-shadow: 0 0 20px rgba(0, 183, 255, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(0, 183, 255, 0.6); }
-  100% { box-shadow: 0 0 20px rgba(0, 183, 255, 0.3); }
-}
-
-/* ========================================================= */
-/* RESPONSIVE (Desktop Enhancement)                          */
+/* DESKTOP RESPONSIVE DESIGN                                 */
 /* ========================================================= */
 @media (min-width: 768px) {
   .timer-container {
     max-width: 1000px;
-    min-height: 90vh;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    padding-bottom: 40px;
   }
 
-  .timer-display {
-    width: 300px;
-    height: 300px;
-  }
-
-  .time-remaining {
-    font-size: 4.5em;
-  }
-
-  .time-total {
-    font-size: 1.4em;
+  .top-header-bar {
+    height: 150px;
+    border-radius: 20px 20px 0 0;
   }
 }
 </style>
@@ -219,7 +228,7 @@ body {
   <div class="top-header-bar"></div>
 
   <div class="timer-display">
-    <div id="time-display" class="time-remaining">10:00</div>
+    <div id="time-display" class="time-remaining">25:00</div>
     <div id="total-time-display" class="time-total">25min</div>
   </div>
 
@@ -233,12 +242,10 @@ body {
     <label>New:</label>
     <div class="time-input-fields">
       <input type="number" id="input-h" placeholder="H" min="0" max="99" value="0">
-      <label>H</label>
-      <input type="number" id="input-m" placeholder="M" min="0" max="59" value="25">
-      <label>M</label>
+      <input type="number" id="input-m" placeholder="Min" min="0" max="59" value="25">
       <input type="number" id="input-s" placeholder="S" min="0" max="59" value="0">
-      <label>S</label>
     </div>
+    <button type="submit" id="set-time-btn">SET</button>
   </form>
 
   <button id="back-btn" onclick="window.location.href='dashboard.html'">Back</button>
@@ -277,18 +284,44 @@ function countdown() {
   if (timeRemainingSeconds <= 0) {
     clearInterval(interval);
     interval = null;
-    alert("Time's up!");
+    alert("Time's up! Great job studying!");
+    timeRemainingSeconds = 0;
+    updateDisplay();
+    startBtn.textContent = 'Start';
+    startBtn.style.backgroundColor = '#4CAF50';
     return;
   }
   timeRemainingSeconds--;
   updateDisplay();
 }
 
+function setTimer(event) {
+  event.preventDefault();
+  const h = parseInt(inputH.value) || 0;
+  const m = parseInt(inputM.value) || 0;
+  const s = parseInt(inputS.value) || 0;
+  const newTotal = h * 3600 + m * 60 + s;
+
+  if (newTotal > 0) {
+    totalTimeSeconds = newTotal;
+    timeRemainingSeconds = newTotal;
+    updateDisplay();
+    clearInterval(interval);
+    interval = null;
+    startBtn.textContent = 'Start';
+    startBtn.style.backgroundColor = '#4CAF50';
+  } else {
+    alert('Please enter a valid time.');
+  }
+}
+
 startBtn.addEventListener('click', () => {
   if (!interval && timeRemainingSeconds > 0) {
     interval = setInterval(countdown, 1000);
     startBtn.textContent = 'Running';
-    startBtn.style.background = '#3b8fb9';
+    startBtn.style.backgroundColor = '#2c7da0';
+  } else if (timeRemainingSeconds === 0) {
+    alert('Please set a new time first.');
   }
 });
 
@@ -296,7 +329,7 @@ stopBtn.addEventListener('click', () => {
   clearInterval(interval);
   interval = null;
   startBtn.textContent = 'Resume';
-  startBtn.style.background = 'var(--primary-color)';
+  startBtn.style.backgroundColor = '#f0ad4e';
 });
 
 resetBtn.addEventListener('click', () => {
@@ -305,24 +338,10 @@ resetBtn.addEventListener('click', () => {
   timeRemainingSeconds = totalTimeSeconds;
   updateDisplay();
   startBtn.textContent = 'Start';
-  startBtn.style.background = 'var(--primary-color)';
+  startBtn.style.backgroundColor = '#4CAF50';
 });
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const h = parseInt(inputH.value) || 0;
-  const m = parseInt(inputM.value) || 0;
-  const s = parseInt(inputS.value) || 0;
-  const total = h * 3600 + m * 60 + s;
-  if (total > 0) {
-    totalTimeSeconds = total;
-    timeRemainingSeconds = total;
-    updateDisplay();
-  } else {
-    alert('Please set a time greater than zero.');
-  }
-});
-
+form.addEventListener('submit', setTimer);
 updateDisplay();
 </script>
 </body>
