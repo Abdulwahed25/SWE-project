@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Study Room — Chat</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+
+    /* ---------- DIMENSIONS (tweak these if you change header/footer sizes) ---------- */
+    :root{
+      --header-h: 60px;
+      --pinned-h: 64px; 
+      --input-h: 64px;
+      --nav-h: 56px;
+      --primary: #2c7da0;
+      --bg-light: #f0f2f5;
+      --chat-bg: #e9f3f7;
+      --user-bubble: #79d2e1;
+      --partner-bubble: #c0c0c0;
+      --white: #fff;
+      --text: #333;
+    }
+
+    /* ---------- PAGE LAYOUT ---------- */
+    html,body { height: 100%; }
+    body {
+      background-color: var(--bg-light);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .chat-container {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      height: 100vh;          /* crucial so child absolute areas can use 100vh math */
+      background-color: var(--chat-bg);
+      display: block;
+      overflow: hidden;       /* hide body scroll and only allow chat-area scroll */
+    }
+
+    /* ---------- TOP HEADER ---------- */
+    .top-header {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 500px;
+      height: var(--header-h);
+      background-color: var(--primary);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    .back-btn { color: var(--white); text-decoration:none; font-size:1.2rem; }
+    .room-name { font-weight:700; font-size:1.05rem; text-align:center; flex:1; }
+    .settings-btn { cursor:pointer; font-size:1.2rem; margin-left:12px; }
+
+    /* ---------- PINNED LINKS (fixed below header) ---------- */
+    .pinned-links {
+      position: fixed;
+      top: calc(var(--header-h));
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 500px;
+      height: var(--pinned-h);
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.95);
+      border-bottom: 1px solid #e3e3e3;
+      z-index: 999;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:6px;
+    }
+    .pinned-title { font-weight:700; font-size:0.92rem; margin-bottom:0; }
+    .pinned-row { display:flex; gap:8px; align-items:center; }
+    .pinned-item {
+      display:inline-block;
+      background:var(--partner-bubble);
+      padding:6px 10px;
+      border-radius:8px;
+      font-size:0.88rem;
+      color:var(--text);
+      text-decoration:none;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:100%;
+    }
+
+    /* ---------- CHAT AREA (the scrollable region) ---------- */
+    .chat-area {
+      position: absolute;
+      left: 0;
+      right: 0;
+      /* top sits below header + pinned */
+      top: calc(var(--header-h) + var(--pinned-h));
+      /* bottom sits above input bar + bottom nav */
+      bottom: calc(var(--input-h) + var(--nav-h));
+      padding: 14px 12px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+      z-index: 10;
+    }
+
+    /* ---------- MESSAGES ---------- */
+    .message { display:flex; margin-bottom:12px; width:100%; }
+    .message.partner { justify-content:flex-start; }
+    .message.user { justify-content:flex-end; }
+    .message.system { justify-content:center; }
+
+    .bubble {
+      max-width:78%;
+      padding:12px 14px;
+      border-radius:18px;
+      background:var(--partner-bubble);
+      color:var(--text);
+      line-height:1.3;
+      word-wrap:break-word;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+    }
+    .user .bubble { background:var(--user-bubble); }
+    .system .bubble { width:95%; border-radius:12px; }
+
+    .file-link { display:block; color:var(--primary); font-weight:700; margin-top:6px; text-decoration:none; }
+    .tag { display:inline-block; margin-top:6px; padding:2px 6px; background:#e0b0b0; border-radius:4px; font-size:0.78rem; }
+
+    /* ---------- INPUT BAR ---------- */
+    .input-bar {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(var(--nav-h));
+      width: 100%;
+      max-width: 500px;
+      height: var(--input-h);
+      padding: 10px 12px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      background:var(--white);
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.06);
+      z-index: 1000;
+    }
+    .input-bar input {
+      flex:1;
+      height:44px;
+      padding:10px 14px;
+      border-radius:24px;
+      border:1px solid #ddd;
+      outline:none;
+      font-size:1rem;
+    }
+    .send-btn {
+      width:44px; height:44px; border-radius:50%;
+      border:none; background:var(--primary); color:var(--white); font-size:1.05rem; cursor:pointer;
+    }
+
+    /* ---------- BOTTOM NAV ---------- */
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom:0;
+      width:100%;
+      max-width:500px;
+      height:var(--nav-h);
+      background:var(--white);
+      display:flex;
+      justify-content:space-around;
+      align-items:center;
+      border-top:1px solid #e8e8e8;
+      z-index:1000;
+      gap:8px;
+    }
+    .nav-icon { font-size:1.25rem; color:#777; text-decoration:none; user-select:none; }
+    .nav-icon.active { color:var(--primary); }
+
+    /* ---------- DESKTOP/LARGER ---------- */
+    @media (min-width:768px){
+      :root{ --header-h:64px; --pinned-h:64px; --input-h:72px; --nav-h:56px; }
+      .chat-container { max-width:800px; border-radius:12px; overflow:hidden; box-shadow:0 6px 22px rgba(0,0,0,0.06); }
+      .top-header, .pinned-links, .input-bar, .bottom-nav { left:50%; transform:translateX(-50%); max-width:800px; }
+      .room-name{ font-size:1.15rem; }
+      .chat-area { padding: 18px 20px; }
+    }
+
+    /* small polish so long message doesn't push height too much in pinned bar */
+    .pinned-links { gap:6px; align-items:center; }
+  </style>
+</head>
+<body>
+  <div class="chat-container" role="application" aria-label="Study chat room">
+
+    <!-- HEADER -->
+    <header class="top-header" role="banner">
+      <a href="dashboard.html" class="back-btn" aria-label="Back to dashboard">←</a>
+      <div class="room-name" aria-live="polite">Room Name</div>
+      <button class="settings-btn" id="settings-btn" aria-label="Add pinned resource">⚙️</button>
+    </header>
+
+    <!-- PINNED LINKS -->
+    <section class="pinned-links" id="pinned-links" aria-label="Pinned resources">
+      <div class="pinned-row">
+        <div class="pinned-title">Pinned Resources</div>
+      </div>
+      <div class="pinned-row" id="pinned-row-list">
+        <a href="#" class="pinned-item" title="http://teem29.swe363.com">http://teem29.swe363.com</a>
+        <a href="#" class="pinned-item" title="Study File: Chapter 5 PDF">Study File: Chapter 5 PDF</a>
+      </div>
+    </section>
+
+    <!-- CHAT AREA -->
+    <main class="chat-area" id="chat-area" tabindex="0" aria-label="Messages">
+      <div class="message partner">
+        <div class="bubble">what task are you working on?</div>
+      </div>
+
+      <div class="message partner">
+        <div class="bubble">do you want help?</div>
+      </div>
+
+      <div class="message user">
+        <div class="bubble">no thanks, I’m working on debugging.</div>
+      </div>
+
+      <div class="message user">
+        <div class="bubble">I’ll join the timer in 10 minutes.</div>
+      </div>
+
+      <div class="message system">
+        <div class="bubble">
+          <strong>Work Stuff</strong><br>
+          <a href="#" class="file-link">http://teem29.swe363.com</a>
+          <span class="tag">file</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- INPUT -->
+    <div class="input-bar">
+      <input id="chat-input" type="text" placeholder="Type a message…" aria-label="Type a message" />
+      <button id="send-btn" class="send-btn" aria-label="Send">↑</button>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav" role="navigation" aria-label="Bottom navigation">
+      <button class="nav-icon active" id="nav-chat" title="Chat">💬</button>
+      <button class="nav-icon" id="nav-search" title="Search">🔍</button>
+      <a class="nav-icon" href="dashboard.html" title="Home">🏠</a>
+      <a class="nav-icon" href="profile.html" title="Profile">👤</a>
+      <a class="nav-icon" href="notifications.html" title="Notifications">🔔</a>
+    </nav>
+  </div>
+
+  <script>
+    // Elements
+    const chatArea = document.getElementById('chat-area');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const settingsBtn = document.getElementById('settings-btn');
+    const pinnedRow = document.getElementById('pinned-row-list');
+
+    // Ensure the chat area starts scrolled to bottom on load
+    window.addEventListener('load', () => {
+      scrollToBottom(true);
+    });
+
+    // Send message
+    function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      appendMessage(text, 'user');
+      chatInput.value = '';
+      scrollToBottom();
+
+      // Example: a simple auto-response after delay
+      setTimeout(() => {
+        appendMessage(`Got it — "${text}" 👍`, 'partner');
+        scrollToBottom();
+      }, 700);
+    }
+
+    // Append message helper
+    function appendMessage(textOrNode, type = 'partner') {
+      const wrapper = document.createElement('div');
+      wrapper.className = `message ${type}`;
+
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+
+      if (typeof textOrNode === 'string') {
+        bubble.textContent = textOrNode;
+      } else {
+        bubble.appendChild(textOrNode);
+      }
+
+      wrapper.appendChild(bubble);
+      chatArea.appendChild(wrapper);
+    }
+
+    // Scroll to bottom helper
+    function scrollToBottom(jump = false) {
+      // Using scrollTo with behavior smooth can be nicer but can also interrupt fast typing.
+      if (jump) {
+        chatArea.scrollTop = chatArea.scrollHeight;
+      } else {
+        // smooth behavior
+        chatArea.scrollTo({ top: chatArea.scrollHeight, behavior: 'smooth' });
+      }
+    }
+
+    // Events: click / enter key
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // Settings: add pinned resource
+    settingsBtn.addEventListener('click', () => {
+      const newLink = prompt('Enter URL or resource name to pin:');
+      if (!newLink) return;
+      const a = document.createElement('a');
+      a.className = 'pinned-item';
+      a.href = '#';
+      a.title = newLink;
+      a.textContent = newLink;
+      pinnedRow.appendChild(a);
+
+      // If pinned row grows too large vertically, we still have a fixed pinned height.
+      // You can implement a popup or expand action if you want to display many links.
+      alert('Pinned resource added.');
+    });
+
+    // Small navigation click effects (visual)
+    document.querySelectorAll('.nav-icon').forEach(btn => {
+      btn.addEventListener('pointerdown', () => btn.classList.add('pressed'));
+      btn.addEventListener('pointerup', () => btn.classList.remove('pressed'));
+      btn.addEventListener('click', (e) => {
+        // toggle "active" only for icon buttons (not links)
+        if (btn.tagName === 'BUTTON') {
+          document.querySelectorAll('.nav-icon').forEach(n => n.classList.remove('active'));
+          btn.classList.add('active');
+        }
+      });
+    });
+
+    // Accessibility: focus chat area when using keyboard so arrow keys scroll it
+    chatArea.addEventListener('focus', () => {
+      // no-op, kept in case we want to announce latest message etc.
+    });
+
+    // Optional: handle resizing changes to keep correct scroll (e.g., keyboard on mobile)
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        scrollToBottom(true);
+      }, 150);
+    });
+
+  </script>
+</body>
+</html>
