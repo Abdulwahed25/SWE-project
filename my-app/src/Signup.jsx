@@ -23,10 +23,11 @@ function Signup() {
   };
 
   return (
-    <div className="signup-container">
-      <div className="header-design"></div>
+    <div className="body-wrapper">
+      <div className="signup-container">
+        <div className="header-design"></div>
 
-      <h1 className="signup-title">Sign up</h1>
+        <h1 className="signup-title">Sign up</h1>
 
       <form onSubmit={handleSubmit} id="signup-form">
         <div className="input-group-row">
@@ -99,6 +100,7 @@ function Signup() {
       <p className="login-prompt">
         do not you have account? <Link to="/login" className="login-link">login!</Link>
       </p>
+    </div>
     </div>
   );
 }

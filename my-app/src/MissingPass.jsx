@@ -11,10 +11,11 @@ function MissingPASS() {
   };
 
   return (
-    <div className="signup-container">
-      <div className="header-design"></div>
+    <div className="body-wrapper">
+      <div className="signup-container">
+        <div className="header-design"></div>
 
-      <h1 className="signup-title">Reset Password</h1>
+        <h1 className="signup-title">Reset Password</h1>
 
       <form onSubmit={handleSubmit} id="reset-password-form">
         <p className="reset-instruction-text">
@@ -43,6 +44,7 @@ function MissingPASS() {
           Remember your password? <a href="/login" className="login-link">Log in</a>
         </p>
       </form>
+    </div>
     </div>
   );
 }

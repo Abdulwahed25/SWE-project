@@ -21,9 +21,10 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <div className="header-design"></div>
-      <h1 className="login-title">Login</h1>
+    <div className="body-wrapper">
+      <div className="login-container">
+        <div className="header-design"></div>
+        <h1 className="login-title">Login</h1>
       <form onSubmit={handleSubmit} id="login-form">
         <div className="input-group stacked">
           <label htmlFor="email">Email</label>
@@ -62,6 +63,7 @@ function Login() {
         </div>
       </form>
       {message && <h2 className="welcome-message">{message}</h2>}
+    </div>
     </div>
   );
 }

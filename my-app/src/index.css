@@ -48,24 +48,24 @@ code {
 .body-wrapper {
   width: 100%;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.signup-container,
-.login-container {
+.signup-container {
   width: 100%;
   max-width: 450px; 
   background: var(--white);
   overflow: hidden;
-  margin: auto;
 }
 
-/* Center login and signup pages */
-body:has(.signup-container),
-body:has(.login-container) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+.login-container {
+  text-align: center;
+  width: 200%;
+  max-width: 450px;
+  background: var(--white);
+  overflow: hidden;
 }
 
 .header-design {
@@ -257,6 +257,11 @@ body:has(.login-container) {
 /* ========================================================= */
 /* FORGOT PASSWORD PAGE STYLES                               */
 /* ========================================================= */
+.signup-title.reset-password-title {
+  text-align: center;
+  margin-top: 15%;
+}
+
 #reset-password-form {
   padding: 0 25px;
 }
@@ -272,6 +277,8 @@ body:has(.login-container) {
 /* DASHBOARD PAGE STYLES                                     */
 /* ========================================================= */
 .dashboard-container {
+   position: relative;                 
+  padding-top: 16px; 
   width: 100%;
   max-width: 520px;
   margin: 0 auto;
@@ -282,17 +289,24 @@ body:has(.login-container) {
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
-.top-header {
-  background-color: var(--primary-color);
-  height: 180px;
+.dashboard-container .top-header {
+  position: absolute;                
+  top: 8px;                          
+  left: 16px;
+  right: 16px;
+  height: 64px;
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 20px;
-  border-bottom-left-radius: 40px;
-  border-bottom-right-radius: 40px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  border-radius: 16px;
+  background: rgba(20, 110, 140, 0.88);             
+  backdrop-filter: blur(6px) saturate(120%);         
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 1;                        
 }
+
 
 .header-menu-icon {
   font-size: 2em;
@@ -301,9 +315,12 @@ body:has(.login-container) {
 }
 
 .search-section {
+  position: relative;                 
+  z-index: 2;                          
   padding: 0 20px;
-  margin-top: -40px;
+  margin-top: 8px;                     
 }
+
 
 .search-label {
   font-size: 1.5em;
@@ -433,6 +450,8 @@ body:has(.login-container) {
 .nav-icon:hover {
   color: var(--primary-color);
 }
+
+
 
 /* ========================================================= */
 /* PROFILE PAGE STYLES                                       */
@@ -1113,14 +1132,17 @@ body:has(.login-container) {
 @media (min-width: 768px) {
   /* Signup/Login Desktop */
   .body-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 40px 20px;
-    min-height: 100vh;
   }
   
-  .signup-container,
+  .signup-container {
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    min-height: 700px;
+    padding-bottom: 30px;
+  }
+
   .login-container {
     max-width: 500px;
     border-radius: 15px;
@@ -1163,14 +1185,6 @@ body:has(.login-container) {
   }
 
   /* Dashboard Desktop */
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 50px 0;
-    background-color: var(--background-desktop);
-  }
-
   .dashboard-container {
     max-width: 1000px;
     border-radius: 20px;
@@ -1304,14 +1318,15 @@ body:has(.login-container) {
     box-shadow: 0 6px 22px rgba(0,0,0,0.06);
   }
   
-  .top-header,
-  .pinned-links,
-  .input-bar,
-  .bottom-nav {
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 800px;
-  }
+.chat-container .top-header,
+.chat-container .pinned-links,
+.chat-container .input-bar,
+.chat-container .bottom-nav {
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 800px;
+}
+
   
   .room-name {
     font-size: 1.15rem;
@@ -1320,4 +1335,10 @@ body:has(.login-container) {
   .chat-area {
     padding: 18px 20px;
   }
+}
+.timer-container,
+.todo-container,
+.chat-container {
+  margin-left: auto;
+  margin-right: auto;
 }
