@@ -1,0 +1,200 @@
+      :root {
+            --primary-color: #2c7da0; 
+            --light-primary: #38a3a5;
+            --text-color: #333;
+            --white: #fff;
+            --background-desktop: #f0f2f5;
+            --border-color: #eee;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-desktop);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 500px; /* Constrain size for mobile/card look */
+            background-color: var(--white);
+            min-height: 100vh; /* Full height on mobile */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding-bottom: 70px; 
+        }
+        
+        /* --- HEADER --- */
+        .page-header {
+            background-color: var(--primary-color);
+            height: 120px;
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-arrow {
+            color: var(--white);
+            font-size: 1.5em;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .profile-heading {
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+        
+        /* --- PROFILE CARD STYLING --- */
+        .profile-card {
+            padding: 20px;
+            margin: 20px;
+            background-color: var(--secondary-bg, #fcfcfc);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- LIST ITEM STYLING (The core info display) --- */
+        .info-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .info-label-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .item-icon {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-right: 15px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .info-label {
+            font-weight: 600;
+            font-size: 1em;
+            color: var(--text-color);
+        }
+
+        .info-value {
+            color: #666;
+            font-size: 0.9em;
+            text-align: right;
+            margin-left: 20px;
+        }
+
+        .action-arrow {
+            color: #ccc;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* --- EDIT MODE FORM STYLING --- */
+        #edit-profile-form {
+            display: none; /* Hidden by default */
+            padding: 20px;
+        }
+        
+        #edit-profile-form.active {
+            display: block;
+        }
+
+        .form-input-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+        
+        .form-input-group input, .form-input-group select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        /* --- BUTTONS --- */
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-primary);
+        }
+        
+        #edit-btn {
+            margin-top: 30px;
+        }
+
+        /* --- DESKTOP RESPONSIVENESS --- */
+        @media (min-width: 768px) {
+            body {
+                align-items: center; /* Center card vertically */
+            }
+            .profile-container {
+                max-width: 800px;
+                min-height: auto;
+                border-radius: 15px;
+            }
+            .page-header {
+                height: 80px;
+                border-radius: 15px 15px 0 0;
+            }
+            .profile-card {
+                padding: 40px;
+                margin: 40px;
+            }
+            .info-item {
+                padding: 20px 0;
+            }
+        }
