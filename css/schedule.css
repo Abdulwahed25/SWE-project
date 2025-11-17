@@ -1,0 +1,239 @@
+:root {
+    --primary: #2c7da0;
+    --primary-light: #38a3a5;
+    --white: #fff;
+    --text: #333;
+    --text-light: #666;
+    --bg: #f0f2f5;
+    --border: #e0e0e0;
+    --math: #4CAF50;
+    --physics: #2196F3;
+    --chemistry: #9C27B0;
+    --study: #FF9800;
+    --group: #795548;
+    --break: #607D8B;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.schedule-container {
+    width: 100%;
+    max-width: 500px;
+    background: var(--white);
+    min-height: 100vh;
+    padding-bottom: 70px;
+}
+
+.page-header {
+    background: var(--primary);
+    height: 120px;
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.back-arrow {
+    color: var(--white);
+    font-size: 1.5em;
+    text-decoration: none;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.week-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+}
+
+.nav-btn {
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background 0.3s;
+}
+
+.nav-btn:hover {
+    background: var(--primary-light);
+}
+
+.current-week {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 0 20px 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.time-column, .day-column {
+    background: var(--white);
+}
+
+.time-header, .day-header {
+    background: var(--primary);
+    color: var(--white);
+    padding: 10px 5px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9em;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.time-slot {
+    height: 60px;
+    padding: 5px;
+    text-align: center;
+    font-size: 0.8em;
+    color: var(--text-light);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.schedule-item {
+    padding: 8px;
+    margin: 2px;
+    border-radius: 6px;
+    color: var(--white);
+    font-size: 0.8em;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.schedule-item:hover {
+    transform: translateY(-2px);
+}
+
+.schedule-item .subject {
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.schedule-item .time,
+.schedule-item .location {
+    font-size: 0.75em;
+    opacity: 0.9;
+}
+
+.math-class { background: var(--math); }
+.physics-class { background: var(--physics); }
+.chemistry-class { background: var(--chemistry); }
+.study-session { background: var(--study); }
+.group-study { background: var(--group); }
+.self-study { background: var(--study); opacity: 0.8; }
+.break-time { background: var(--break); }
+
+.add-event-btn {
+    display: block;
+    width: calc(100% - 40px);
+    margin: 0 20px;
+    padding: 15px;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.add-event-btn:hover {
+    background: var(--primary-light);
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+}
+
+.nav-icon {
+    text-decoration: none;
+    color: #999;
+    font-size: 1.7em;
+    padding: 6px;
+    transition: color 0.3s;
+}
+
+.nav-icon:hover {
+    color: var(--primary);
+}
+
+@media (min-width: 768px) {
+    body {
+        align-items: center;
+        padding: 40px 0;
+    }
+
+    .schedule-container {
+        max-width: 1000px;
+        border-radius: 15px;
+        min-height: auto;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .page-header {
+        height: 80px;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .schedule-grid {
+        max-height: 50vh;
+        margin: 0 40px 30px;
+    }
+
+    .bottom-nav {
+        display: none;
+    }
+}

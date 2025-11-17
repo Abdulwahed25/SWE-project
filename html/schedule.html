@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Schedule - Study Hub</title>
+    <link rel="stylesheet" href="../css/schedule.css">
+</head>
+<body>
+    <div class="schedule-container">
+        <!-- Header -->
+        <div class="page-header">
+            <a href="dashboard.html" class="back-arrow">←</a>
+        </div>
+
+        <h1 class="page-title">Study Schedule</h1>
+
+        <!-- Week Navigation -->
+        <div class="week-nav">
+            <button class="nav-btn prev-week">◀</button>
+            <div class="current-week">Week of Dec 11 - Dec 17</div>
+            <button class="nav-btn next-week">▶</button>
+        </div>
+
+        <!-- Schedule Grid -->
+        <div class="schedule-grid">
+            <!-- Time Slots Column -->
+            <div class="time-column">
+                <div class="time-header">Time</div>
+                <div class="time-slot">8:00 AM</div>
+                <div class="time-slot">9:00 AM</div>
+                <div class="time-slot">10:00 AM</div>
+                <div class="time-slot">11:00 AM</div>
+                <div class="time-slot">12:00 PM</div>
+                <div class="time-slot">1:00 PM</div>
+                <div class="time-slot">2:00 PM</div>
+                <div class="time-slot">3:00 PM</div>
+                <div class="time-slot">4:00 PM</div>
+                <div class="time-slot">5:00 PM</div>
+            </div>
+
+            <!-- Days Columns -->
+            <div class="day-column">
+                <div class="day-header">Mon</div>
+                <div class="schedule-item math-class" data-duration="2">
+                    <span class="subject">Mathematics</span>
+                    <span class="time">8:00 - 10:00</span>
+                    <span class="location">Room 204</span>
+                </div>
+                <div class="schedule-item study-session" data-duration="1">
+                    <span class="subject">Study: Physics</span>
+                    <span class="time">2:00 - 3:00</span>
+                    <span class="location">Library</span>
+                </div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">Tue</div>
+                <div class="schedule-item physics-class" data-duration="2">
+                    <span class="subject">Physics</span>
+                    <span class="time">9:00 - 11:00</span>
+                    <span class="location">Lab 101</span>
+                </div>
+                <div class="schedule-item group-study" data-duration="2">
+                    <span class="subject">Group Study</span>
+                    <span class="time">3:00 - 5:00</span>
+                    <span class="location">Study Room B</span>
+                </div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">Wed</div>
+                <div class="schedule-item chemistry-class" data-duration="3">
+                    <span class="subject">Chemistry</span>
+                    <span class="time">10:00 - 1:00</span>
+                    <span class="location">Lab 203</span>
+                </div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">Thu</div>
+                <div class="schedule-item math-class" data-duration="2">
+                    <span class="subject">Mathematics</span>
+                    <span class="time">8:00 - 10:00</span>
+                    <span class="location">Room 204</span>
+                </div>
+                <div class="schedule-item self-study" data-duration="3">
+                    <span class="subject">Self Study</span>
+                    <span class="time">1:00 - 4:00</span>
+                    <span class="location">Home</span>
+                </div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">Fri</div>
+                <div class="schedule-item physics-class" data-duration="2">
+                    <span class="subject">Physics</span>
+                    <span class="time">9:00 - 11:00</span>
+                    <span class="location">Lab 101</span>
+                </div>
+                <div class="schedule-item break-time" data-duration="1">
+                    <span class="subject">Break</span>
+                    <span class="time">4:00 - 5:00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Event Button -->
+        <button class="add-event-btn">+ Add Event</button>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="study_room_chat.html" class="nav-icon">💬</a>
+            <a href="#" class="nav-icon">🔍</a>
+            <a href="dashboard.html" class="nav-icon">🏠</a>
+            <a href="profile.html" class="nav-icon">👤</a>
+            <a href="notifications.html" class="nav-icon">🔔</a>
+        </nav>
+    </div>
+
+    <script src="/js/schedule.js"></script>
+</body>
+</html>
