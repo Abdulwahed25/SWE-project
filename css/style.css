@@ -1,0 +1,35 @@
+@import url('signup.css');
+
+.signup-title {
+  text-align: center;
+  margin-top: 15%;
+}
+
+#reset-password-form {
+  padding: 0 25px;
+}
+
+.reset-instruction-text {
+  text-align: center;
+  color: var(--text-color);
+  font-size: 1em;
+  padding: 0 25px 20px;
+}
+
+.input-group label {
+  padding: 0 25px;
+}
+
+@media (min-width: 768px) {
+  #reset-password-form {
+    padding: 0 40px;
+  }
+  
+  .reset-instruction-text {
+    padding: 0 40px 20px;
+  }
+  
+  .input-group label {
+    padding: 0 40px;
+  }
+}

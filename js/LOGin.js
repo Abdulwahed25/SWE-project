@@ -1,25 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Study Hub - Login</title>
-
-  <!-- Link to your CSS -->
-  <link rel="stylesheet" href="css/login.css">
-
-  <!-- React and Babel -->
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-</head>
-
-<body>
-  <div id="root"></div>
-
-  <script type="text/babel">
-
-    // ✅ React Component for Login Page
+// ✅ React Component for Login Page
     function Login() {
       const [email, setEmail] = React.useState('');
       const [password, setPassword] = React.useState('');
@@ -90,6 +69,3 @@
     // ✅ Render the component to the page
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<Login />);
-  </script>
-</body>
-</html>
