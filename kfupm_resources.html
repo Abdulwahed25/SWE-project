@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KFUPM Resources</title>
+    <style>
+        :root {
+            --primary-color: #2c7da0; 
+            --light-primary: #4ba3c3;
+            --text-color: #333;
+            --white: #fff;
+            --background-desktop: #f0f2f5;
+            --shadow-subtle: 0 4px 10px rgba(0, 0, 0, 0.15);
+            --secondary-bg: #e6f3f8; 
+        }
+
+        /* --- GLOBAL RESET & BODY LAYOUT --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-desktop);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .resources-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--white);
+            min-height: 100vh;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding-bottom: 40px;
+        }
+        
+        /* --- HEADER --- */
+        .page-header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 25px 20px 10px;
+            font-size: 1.5em;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .back-arrow {
+            color: var(--white);
+            font-size: 1.5em;
+            text-decoration: none;
+            float: left;
+            margin-top: -5px;
+            margin-left: 5px;
+        }
+
+        /* --- SEARCH AND FILTER --- */
+        .search-area {
+            padding: 20px;
+            margin-bottom: 10px;
+            background-color: var(--white);
+        }
+        
+        #resource-search {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        /* --- TABS --- */
+        .tab-bar {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 2px solid #ddd;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+        
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            font-weight: 600;
+            color: #999;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        /* --- RESOURCE LIST --- */
+        #resource-content {
+            padding: 0 20px;
+        }
+        
+        .resource-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: var(--secondary-bg);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .resource-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .resource-details {
+            flex-grow: 1;
+        }
+
+        .resource-details span {
+            display: block;
+        }
+        
+        .item-title {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--primary-color);
+        }
+        
+        .item-subtitle {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .item-icon {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-left: 15px;
+        }
+
+        /* --- DESKTOP RESPONSIVENESS --- */
+        @media (min-width: 768px) {
+            body {
+                align-items: center;
+            }
+            .resources-container {
+                max-width: 1000px;
+                min-height: auto;
+                border-radius: 15px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            }
+            .page-header {
+                border-radius: 15px 15px 0 0;
+            }
+            #resource-content {
+                padding: 0 40px;
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* Two columns on desktop */
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="resources-container">
+        
+        <div class="page-header">
+            <a href="dashboard.html" class="back-arrow">&larr;</a>
+            KFUPM Student Resources
+        </div>
+        
+        <!-- SEARCH AREA -->
+        <div class="search-area">
+            <input type="search" id="resource-search" placeholder="Search by Course Code (e.g., SWE 363) or Link Name">
+        </div>
+
+        <!-- TABS -->
+        <div class="tab-bar">
+            <button class="tab-button active" data-tab="services">University Services</button>
+            <button class="tab-button" data-tab="academics">Academic Tools</button>
+            <button class="tab-button" data-tab="notes">Shared Notes</button>
+        </div>
+
+        <!-- RESOURCE CONTENT AREA -->
+        <div id="resource-content">
+            <!-- Content generated by JS will appear here -->
+        </div>
+
+    </div>
+    
+    <script>
+        const resourcesData = {
+            services: [
+                { title: "KFUPM Blackboard", subtitle: "Access all course materials and assignments.", url: "https://blackboard.kfupm.edu.sa/", keywords: "blackboard, learning, assignments" },
+                { title: "Registrar Services", subtitle: "Course registration, drop/add, official records.", url: "https://registrar.kfupm.edu.sa/", keywords: "registration, grades, records" },
+                { title: "KFUPM Email Access", subtitle: "Official university email portal.", url: "https://outlook.office.com/", keywords: "email, office 365" },
+            ],
+            academics: [
+                { title: "Course Catalog", subtitle: "View prerequisites and course descriptions.", url: "https://catalog.kfupm.edu.sa/", keywords: "catalog, courses, plan" },
+                { title: "Academic Calendar", subtitle: "Important dates for semesters, exams, and holidays.", url: "https://kfupm.edu.sa/academic-calendar", keywords: "calendar, dates, exams" },
+            ],
+            notes: [
+                { title: "SWE 363 Notes - Ch 5", subtitle: "Software Engineering - Shared by CS Students group.", url: "#", keywords: "swe 363, software, notes" },
+                { title: "MATH 101 Practice Exam", subtitle: "Calculus I practice sheet.", url: "#", keywords: "math 101, calculus, exam, practice" },
+            ]
+        };
+
+        const contentArea = document.getElementById('resource-content');
+        const searchInput = document.getElementById('resource-search');
+        const tabButtons = document.querySelectorAll('.tab-button');
+        let activeTab = 'services';
+
+        // --- Core Rendering Logic ---
+        
+        function renderResources(data) {
+            contentArea.innerHTML = '';
+            
+            data.forEach(item => {
+                const link = document.createElement('a');
+                link.href = item.url;
+                link.target = "_blank"; // Open external links in a new tab
+                link.className = 'resource-item';
+
+                link.innerHTML = `
+                    <div class="resource-details">
+                        <span class="item-title">${item.title}</span>
+                        <span class="item-subtitle">${item.subtitle}</span>
+                    </div>
+                    <span class="item-icon">&rarr;</span>
+                `;
+                contentArea.appendChild(link);
+            });
+        }
+        
+        // --- Filtering Logic ---
+        
+        function filterResources() {
+            const query = searchInput.value.toLowerCase().trim();
+            let currentData = resourcesData[activeTab];
+            
+            if (query === '') {
+                renderResources(currentData);
+                return;
+            }
+
+            const filtered = currentData.filter(item => 
+                item.title.toLowerCase().includes(query) ||
+                item.keywords.toLowerCase().includes(query) ||
+                item.subtitle.toLowerCase().includes(query)
+            );
+            
+            renderResources(filtered);
+        }
+
+        // --- Tab Switching Logic ---
+        
+        function handleTabClick(event) {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            activeTab = event.target.getAttribute('data-tab');
+            filterResources(); // Renders the new tab content
+            searchInput.value = ''; // Clear search when switching tabs
+        }
+
+        // --- Event Listeners ---
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', handleTabClick);
+        });
+
+        searchInput.addEventListener('input', filterResources);
+
+        // Initial render on load
+        renderResources(resourcesData.services);
+
+    </script>
+</body>
+</html>
