@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Settings</title>
+    <!-- Combined CSS for self-contained, responsive styling -->
+    <style>
+        /* --- CORE VARIABLES (DNA) --- */
+        :root {
+            --primary-color: #2c7da0; /* Teal/Blue */
+            --light-primary: #4ba3c3;
+            --text-color: #333;
+            --white: #fff;
+            --background-desktop: #f0f2f5;
+            --card-bg-light: #e0e0e0; 
+            --card-bg-dark: #216a8a; 
+            --shadow-subtle: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* --- GLOBAL RESET & BODY LAYOUT --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-desktop);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .settings-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--white);
+            min-height: 100vh;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding-bottom: 40px;
+        }
+        
+        /* --- HEADER --- */
+        .page-header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 25px 20px;
+            font-size: 1.5em;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+        }
+        
+        /* --- MAIN SETTINGS CARD --- */
+        .settings-card {
+            background-color: var(--card-bg-dark); /* Darker background for card */
+            padding: 20px;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-subtle);
+        }
+        
+        .room-name-display {
+            color: var(--white);
+            font-size: 1.5em;
+            font-weight: 700;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 15px;
+        }
+
+        /* --- DISPLAY GRID (Read-Only View) --- */
+        .display-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; 
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            background-color: var(--card-bg-light);
+        }
+
+        .setting-label, .setting-value {
+            padding: 15px 12px;
+            font-weight: 600;
+            color: var(--text-color);
+            border-bottom: 1px solid #c0c0c0;
+        }
+        
+        .setting-label {
+            background-color: #d8d8d8;
+            font-size: 0.95em;
+        }
+
+        .setting-value {
+            background-color: var(--card-bg-light);
+            font-weight: 400;
+            font-size: 0.95em;
+        }
+
+        /* Remove bottom border on last row */
+        .display-grid div:nth-child(even):last-child,
+        .display-grid div:nth-child(odd):last-child {
+            border-bottom: none;
+        }
+        
+        /* --- EDIT MODE FORM STYLING (Hidden by default) --- */
+        #edit-form {
+            display: none;
+            padding: 20px;
+        }
+        
+        .form-input-row {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .form-input-row label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .form-input-row input[type="text"] {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+
+        /* --- ACTION BUTTONS --- */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        /* Edit/Save Button */
+        #edit-display-btn, #save-btn, #back-btn {
+            background-color: var(--light-primary);
+            color: var(--white);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            box-shadow: var(--shadow-subtle);
+        }
+        
+        #edit-display-btn:hover, #save-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        #back-btn {
+            background-color: #f0f0f0;
+            color: var(--text-color);
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            display: block;
+            width: 150px;
+        }
+
+        /* --- DESKTOP RESPONSIVENESS --- */
+        @media (min-width: 768px) {
+            body {
+                align-items: center;
+            }
+            .settings-container {
+                max-width: 800px;
+                min-height: auto;
+                border-radius: 10px;
+            }
+            .page-header {
+                border-radius: 10px 10px 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        
+        <div class="page-header">
+            Room Setting
+        </div>
+        
+        <!-- DISPLAY MODE (Initial View) -->
+        <div id="display-mode">
+            <div class="settings-card">
+                <div id="current-room-name" class="room-name-display">CS Students</div>
+
+                <div class="display-grid">
+                    
+                    <div class="setting-label">Room Name:</div>
+                    <div class="setting-value" id="display-room-name-val">CS Students</div>
+
+                    <div class="setting-label">Description:</div>
+                    <div class="setting-value" id="display-description-val">Study group for CS courses</div>
+
+                    <div class="setting-label">Members Access:</div>
+                    <div class="setting-value" id="display-access-val">Just Admins</div>
+
+                    <div class="setting-label">Privacy:</div>
+                    <div class="setting-value" id="display-privacy-val">Public</div>
+                    
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" id="edit-display-btn">Edit</button>
+            </div>
+            
+            <button id="back-btn" onclick="window.location.href='study_room_chat.html'">Back</button>
+        </div>
+        
+        
+        <!-- EDIT MODE (Form to modify settings) -->
+        <form id="edit-form" class="settings-card">
+            
+            <div class="room-name-group">
+                <label for="edit-room-name">Room name:</label>
+                <input type="text" id="edit-room-name" required>
+            </div>
+            
+            <div class="form-input-row">
+                <label for="edit-description">Description:</label>
+                <input type="text" id="edit-description">
+            </div>
+
+            <div class="form-input-row">
+                <label>Members Access:</label>
+                <div class="radio-option-group">
+                    <label><input type="radio" name="edit-access" value="all"> editing group settings: all</label>
+                    <label><input type="radio" name="edit-access" value="admins"> editing group settings: just admins</label>
+                </div>
+            </div>
+
+            <div class="form-input-row">
+                <label>Privacy:</label>
+                <div class="radio-option-group">
+                    <label><input type="radio" name="edit-privacy" value="public"> public</label>
+                    <label><input type="radio" name="edit-privacy" value="private"> private</label>
+                </div>
+            </div>
+
+            <div class="action-buttons" style="flex-direction: column;">
+                <button type="submit" id="save-btn" style="margin-bottom: 10px;">Save Changes</button>
+                <button type="button" id="cancel-edit-btn" style="background-color: #ff4d4d;">Cancel Edit</button>
+            </div>
+        </form>
+
+    </div>
+    
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const displayMode = document.getElementById('display-mode');
+        const editForm = document.getElementById('edit-form');
+        const editDisplayBtn = document.getElementById('edit-display-btn');
+        const cancelEditBtn = document.getElementById('cancel-edit-btn');
+
+        // Simulated initial data (as if fetched from database)
+        let roomSettings = {
+            name: "CS Students",
+            description: "Study group for CS courses",
+            access: "admins", // 'admins' or 'all'
+            privacy: "public" // 'public' or 'private'
+        };
+
+        // --- RENDER FUNCTIONS ---
+        
+        function formatAccess(access) {
+            return access === 'admins' ? 'Just Admins' : 'All Members';
+        }
+        
+        function renderDisplay() {
+            // Update read-only values
+            document.getElementById('current-room-name').textContent = roomSettings.name;
+            document.getElementById('display-room-name-val').textContent = roomSettings.name;
+            document.getElementById('display-description-val').textContent = roomSettings.description;
+            document.getElementById('display-access-val').textContent = formatAccess(roomSettings.access);
+            document.getElementById('display-privacy-val').textContent = roomSettings.privacy.charAt(0).toUpperCase() + roomSettings.privacy.slice(1);
+            
+            // Show display mode, hide edit form
+            displayMode.style.display = 'block';
+            editForm.style.display = 'none';
+        }
+
+        function openEditMode() {
+            // Populate form inputs with current data
+            document.getElementById('edit-room-name').value = roomSettings.name;
+            document.getElementById('edit-description').value = roomSettings.description;
+            
+            // Set radio button checks based on current state
+            document.querySelector(`input[name="edit-access"][value="${roomSettings.access}"]`).checked = true;
+            document.querySelector(`input[name="edit-privacy"][value="${roomSettings.privacy}"]`).checked = true;
+
+            // Show edit form, hide display mode
+            displayMode.style.display = 'none';
+            editForm.style.display = 'block';
+        }
+        
+        function saveSettings(event) {
+            event.preventDefault();
+            
+            const newName = document.getElementById('edit-room-name').value.trim();
+            const newDesc = document.getElementById('edit-description').value.trim();
+            const newAccess = editForm.elements['edit-access'].value;
+            const newPrivacy = editForm.elements['edit-privacy'].value;
+
+            if (newName === '') {
+                alert('Room name cannot be empty.');
+                return;
+            }
+
+            // Update local settings (In a real app, this would be an API call)
+            roomSettings.name = newName;
+            roomSettings.description = newDesc;
+            roomSettings.access = newAccess;
+            roomSettings.privacy = newPrivacy;
+
+            alert('Settings saved! (Simulated)');
+            renderDisplay(); // Switch back to display mode
+        }
+
+        // --- EVENT LISTENERS ---
+        editDisplayBtn.addEventListener('click', openEditMode);
+        cancelEditBtn.addEventListener('click', renderDisplay);
+        editForm.addEventListener('submit', saveSettings);
+
+        // Initialize the page view
+        renderDisplay();
+    </script>
+</body>
+</html>

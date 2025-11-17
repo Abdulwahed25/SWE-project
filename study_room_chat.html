@@ -7,7 +7,6 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
 
-    /* ---------- DIMENSIONS (tweak these if you change header/footer sizes) ---------- */
     :root{
       --header-h: 60px;
       --pinned-h: 64px; 
@@ -20,9 +19,10 @@
       --partner-bubble: #c0c0c0;
       --white: #fff;
       --text: #333;
+      --menu-bg: #ffffff;
+      --menu-border: rgba(0,0,0,0.08);
     }
 
-    /* ---------- PAGE LAYOUT ---------- */
     html,body { height: 100%; }
     body {
       background-color: var(--bg-light);
@@ -62,7 +62,36 @@
     }
     .back-btn { color: var(--white); text-decoration:none; font-size:1.2rem; }
     .room-name { font-weight:700; font-size:1.05rem; text-align:center; flex:1; }
-    .settings-btn { cursor:pointer; font-size:1.2rem; margin-left:12px; }
+    .settings-button-wrap { position: relative; } /* container for menu positioning */
+    .settings-btn { cursor:pointer; font-size:1.2rem; margin-left:12px; background:transparent; border:none; color:var(--white); }
+
+    /* ---------- SETTINGS MENU ---------- */
+    .settings-menu {
+      position: absolute;
+      top: calc(var(--header-h) + 8px); /* appears below header */
+      right: 0;
+      transform: translateY(0);
+      background: var(--menu-bg);
+      border: 1px solid var(--menu-border);
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      min-width: 200px;
+      z-index: 1100;
+      display: none;
+      overflow: hidden;
+    }
+    .settings-menu[aria-hidden="false"] { display: block; }
+    .settings-menu button {
+      display: block;
+      width: 100%;
+      padding: 10px 12px;
+      text-align: left;
+      border: none;
+      background: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .settings-menu button:hover { background: #f5f7f8; }
 
     /* ---------- PINNED LINKS (fixed below header) ---------- */
     .pinned-links {
@@ -83,7 +112,7 @@
       gap:6px;
     }
     .pinned-title { font-weight:700; font-size:0.92rem; margin-bottom:0; }
-    .pinned-row { display:flex; gap:8px; align-items:center; }
+    .pinned-row { display:flex; gap:8px; align-items:center; overflow: hidden; }
     .pinned-item {
       display:inline-block;
       background:var(--partner-bubble);
@@ -186,13 +215,13 @@
     .nav-icon { font-size:1.25rem; color:#777; text-decoration:none; user-select:none; }
     .nav-icon.active { color:var(--primary); }
 
-    /* ---------- DESKTOP/LARGER ---------- */
     @media (min-width:768px){
       :root{ --header-h:64px; --pinned-h:64px; --input-h:72px; --nav-h:56px; }
       .chat-container { max-width:800px; border-radius:12px; overflow:hidden; box-shadow:0 6px 22px rgba(0,0,0,0.06); }
       .top-header, .pinned-links, .input-bar, .bottom-nav { left:50%; transform:translateX(-50%); max-width:800px; }
       .room-name{ font-size:1.15rem; }
       .chat-area { padding: 18px 20px; }
+      .settings-menu { right: 16px; top: calc(var(--header-h) + 12px); } /* adjust for desktop spacing */
     }
 
     /* small polish so long message doesn't push height too much in pinned bar */
@@ -206,7 +235,17 @@
     <header class="top-header" role="banner">
       <a href="dashboard.html" class="back-btn" aria-label="Back to dashboard">←</a>
       <div class="room-name" aria-live="polite">Room Name</div>
-      <button class="settings-btn" id="settings-btn" aria-label="Add pinned resource">⚙️</button>
+
+      <!-- SETTINGS BUTTON WRAP -->
+      <div class="settings-button-wrap" id="settings-wrap">
+        <button class="settings-btn" id="settings-btn" aria-haspopup="true" aria-expanded="false" aria-controls="settings-menu" aria-label="Open settings menu">⚙️</button>
+
+        <!-- Settings menu (hidden by default) -->
+        <div class="settings-menu" id="settings-menu" role="menu" aria-hidden="true">
+          <button type="button" role="menuitem" id="open-settings-btn">Open Room Settings</button>
+          <button type="button" role="menuitem" id="add-pinned-btn">Add Pinned Resource</button>
+        </div>
+      </div>
     </header>
 
     <!-- PINNED LINKS -->
@@ -268,7 +307,13 @@
     const chatArea = document.getElementById('chat-area');
     const chatInput = document.getElementById('chat-input');
     const sendBtn = document.getElementById('send-btn');
+
+    // Settings menu elements
     const settingsBtn = document.getElementById('settings-btn');
+    const settingsMenu = document.getElementById('settings-menu');
+    const settingsWrap = document.getElementById('settings-wrap');
+    const openSettingsBtn = document.getElementById('open-settings-btn');
+    const addPinnedBtn = document.getElementById('add-pinned-btn');
     const pinnedRow = document.getElementById('pinned-row-list');
 
     // Ensure the chat area starts scrolled to bottom on load
@@ -311,16 +356,14 @@
 
     // Scroll to bottom helper
     function scrollToBottom(jump = false) {
-      // Using scrollTo with behavior smooth can be nicer but can also interrupt fast typing.
       if (jump) {
         chatArea.scrollTop = chatArea.scrollHeight;
       } else {
-        // smooth behavior
         chatArea.scrollTo({ top: chatArea.scrollHeight, behavior: 'smooth' });
       }
     }
 
-    // Events: click / enter key
+    // Events: click / enter key for sending
     sendBtn.addEventListener('click', sendMessage);
     chatInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
@@ -329,8 +372,41 @@
       }
     });
 
-    // Settings: add pinned resource
-    settingsBtn.addEventListener('click', () => {
+    // ----------------------------
+    // Settings menu behavior
+    // ----------------------------
+    function openMenu() {
+      settingsMenu.setAttribute('aria-hidden', 'false');
+      settingsBtn.setAttribute('aria-expanded', 'true');
+      // position adjustment if menu would overflow right edge (mobile/desktop)
+      // (menu is right-aligned; for narrow screens it should be fine)
+    }
+
+    function closeMenu() {
+      settingsMenu.setAttribute('aria-hidden', 'true');
+      settingsBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    // Toggle on click
+    settingsBtn.addEventListener('click', (e) => {
+      const isHidden = settingsMenu.getAttribute('aria-hidden') === 'true';
+      if (isHidden) openMenu();
+      else closeMenu();
+
+      // Prevent click from bubbling to document (which would immediately close the menu)
+      e.stopPropagation();
+    });
+
+    // Option 1: Open Room Settings page
+    openSettingsBtn.addEventListener('click', () => {
+      closeMenu();
+      // Navigate to settings page
+      window.location.href = 'room_settings.html';
+    });
+
+    // Option 2: Add pinned resource (original behavior)
+    addPinnedBtn.addEventListener('click', () => {
+      closeMenu();
       const newLink = prompt('Enter URL or resource name to pin:');
       if (!newLink) return;
       const a = document.createElement('a');
@@ -339,10 +415,20 @@
       a.title = newLink;
       a.textContent = newLink;
       pinnedRow.appendChild(a);
-
-      // If pinned row grows too large vertically, we still have a fixed pinned height.
-      // You can implement a popup or expand action if you want to display many links.
+      // Keep user informed
       alert('Pinned resource added.');
+    });
+
+    // Click outside closes menu
+    document.addEventListener('click', (e) => {
+      // If click is inside the settings-wrap, ignore
+      if (settingsWrap.contains(e.target)) return;
+      closeMenu();
+    });
+
+    // Keyboard accessibility: Esc closes the menu
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
     });
 
     // Small navigation click effects (visual)
@@ -358,11 +444,6 @@
       });
     });
 
-    // Accessibility: focus chat area when using keyboard so arrow keys scroll it
-    chatArea.addEventListener('focus', () => {
-      // no-op, kept in case we want to announce latest message etc.
-    });
-
     // Optional: handle resizing changes to keep correct scroll (e.g., keyboard on mobile)
     let resizeTimeout;
     window.addEventListener('resize', () => {
@@ -371,7 +452,6 @@
         scrollToBottom(true);
       }, 150);
     });
-
   </script>
 </body>
 </html>

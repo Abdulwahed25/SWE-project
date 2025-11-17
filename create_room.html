@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Study Room</title>
+    <!-- Combined CSS for self-contained, responsive styling -->
+    <style>
+        /* --- CORE VARIABLES (DNA) --- */
+        :root {
+            --primary-color: #2c7da0; /* Teal/Blue */
+            --light-primary: #4ba3c3;
+            --text-color: #333;
+            --white: #fff;
+            --background-desktop: #f0f2f5;
+            --card-bg: #e0e0e0; /* Light gray for setting rows */
+            --shadow-subtle: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* --- GLOBAL RESET & BODY LAYOUT --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-desktop);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .room-settings-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--white);
+            min-height: 100vh; /* Full height on mobile */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding-bottom: 40px;
+        }
+        
+        /* --- HEADER --- */
+        .page-header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 25px 20px;
+            font-size: 1.5em;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+        }
+        
+        /* --- SETTINGS CARD --- */
+        .settings-card {
+            background-color: var(--primary-color);
+            padding: 20px;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        /* --- ROOM NAME INPUT --- */
+        .room-name-group {
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            margin-bottom: 15px;
+        }
+
+        .room-name-group label {
+            color: var(--white);
+            font-weight: 600;
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        .room-name-group input {
+            width: 55%;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+        }
+        
+        /* --- SETTINGS GRID (Improved Design) --- */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two equal columns */
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: var(--card-bg);
+            margin-bottom: 30px;
+        }
+
+        .setting-label, .setting-value {
+            padding: 15px 12px;
+            font-weight: 600;
+            color: var(--text-color);
+            border-bottom: 1px solid #c0c0c0;
+        }
+        
+        /* Aligning the grid elements */
+        .setting-label {
+            background-color: #d8d8d8; /* Slightly darker gray for labels */
+            font-size: 0.95em;
+        }
+
+        .setting-value {
+            background-color: var(--card-bg);
+            font-weight: 400;
+            font-size: 0.95em;
+        }
+
+        /* Remove bottom border on last row */
+        .settings-grid div:nth-child(5), 
+        .settings-grid div:nth-child(6) {
+            border-bottom: none;
+        }
+        
+        /* Style the Radio/Checkbox Options */
+        .radio-option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .radio-option-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        
+        .radio-option-group input[type="radio"] {
+            margin-right: 8px;
+            accent-color: var(--primary-color);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* --- ACTION BUTTONS --- */
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+            padding: 0 10px;
+        }
+
+        .action-buttons button {
+            flex-grow: 1;
+            margin: 0 10px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Create Button (Primary Action) */
+        #create-btn {
+            background-color: var(--light-primary);
+            color: var(--white);
+        }
+        
+        /* Cancel Button (Secondary Action) */
+        #cancel-btn {
+            background-color: #f0f0f0;
+            color: #666;
+            border: 1px solid #ddd;
+        }
+        
+        .action-buttons button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* --- DESKTOP RESPONSIVENESS --- */
+        @media (min-width: 768px) {
+            body {
+                align-items: center;
+            }
+            .room-settings-container {
+                max-width: 800px;
+                min-height: auto;
+                border-radius: 10px;
+            }
+            .page-header {
+                border-radius: 10px 10px 0 0;
+            }
+            .settings-card {
+                padding: 40px;
+                margin: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="room-settings-container">
+        
+        <div class="page-header">
+            Create Room
+        </div>
+        
+        <form id="create-room-form" class="settings-card">
+            
+            <!-- Room Name Input -->
+            <div class="room-name-group">
+                <label for="room-name">Room name:</label>
+                <input type="text" id="room-name" placeholder="cs students" required>
+            </div>
+            
+            <!-- Settings Grid -->
+            <div class="settings-grid">
+                
+                <!-- Row 1: Description -->
+                <div class="setting-label">Description:</div>
+                <div class="setting-value">
+                    <input type="text" id="description" placeholder="Study group for CS students" style="width: 100%; padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+
+                <!-- Row 2: Access Control -->
+                <div class="setting-label">Members Access:</div>
+                <div class="setting-value">
+                    <div class="radio-option-group">
+                        <label>
+                            <input type="radio" name="access-control" value="all" checked> editing group settings: all
+                        </label>
+                        <label>
+                            <input type="radio" name="access-control" value="admins"> editing group settings: just admins
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Row 3: Privacy -->
+                <div class="setting-label">Privacy:</div>
+                <div class="setting-value">
+                    <div class="radio-option-group">
+                        <label>
+                            <input type="radio" name="privacy" value="public" checked> public
+                        </label>
+                        <label>
+                            <input type="radio" name="privacy" value="private"> private
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button type="button" id="cancel-btn">cancel</button>
+                <button type="submit" id="create-btn">Create</button>
+            </div>
+            
+        </form>
+
+    </div>
+    
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const form = document.getElementById('create-room-form');
+        const cancelButton = document.getElementById('cancel-btn');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const roomName = document.getElementById('room-name').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const access = form.elements['access-control'].value;
+            const privacy = form.elements['privacy'].value;
+
+            if (roomName === '') {
+                alert('Please enter a room name.');
+                return;
+            }
+
+            // Simulate sending data to a server (or logging for development)
+            console.log('Room Data Submitted:');
+            console.log({ roomName, description, access, privacy });
+            
+            alert(`Study Room "${roomName}" successfully created as a ${privacy} room!`);
+            
+            // Redirect or clear form after submission
+            window.location.href = 'study_room_chat.html?room=' + encodeURIComponent(roomName);
+        });
+        
+        cancelButton.addEventListener('click', function() {
+            // Optional: Add confirmation before cancelling
+            if (confirm("Are you sure you want to cancel room creation?")) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+    </script>
+</body>
+</html>
