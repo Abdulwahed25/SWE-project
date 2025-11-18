@@ -13,7 +13,17 @@
     <header class="top-header" role="banner">
       <a href="dashboard.html" class="back-btn" aria-label="Back to dashboard">←</a>
       <div class="room-name" aria-live="polite">Room Name</div>
-      <button class="settings-btn" id="settings-btn" aria-label="Add pinned resource">⚙️</button>
+    
+      <!-- SETTINGS BUTTON WRAP -->
+      <div class="settings-button-wrap" id="settings-wrap">
+        <button class="settings-btn" id="settings-btn" aria-haspopup="true" aria-expanded="false" aria-controls="settings-menu" aria-label="Open settings menu">⚙️</button>
+
+        <!-- Settings menu (hidden by default) -->
+        <div class="settings-menu" id="settings-menu" role="menu" aria-hidden="true">
+          <button type="button" role="menuitem" id="open-settings-btn">Open Room Settings</button>
+          <button type="button" role="menuitem" id="add-pinned-btn">Add Pinned Resource</button>
+        </div>
+      </div>
     </header>
 
     <!-- PINNED LINKS -->

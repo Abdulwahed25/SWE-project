@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Settings</title>
+    <!-- Combined CSS for self-contained, responsive styling -->
+    <link rel="stylesheet" href="../css/room_setting.css">
+</head>
+<body>
+    <div class="settings-container">
+        
+        <div class="page-header">
+            Room Setting
+        </div>
+        
+        <!-- DISPLAY MODE (Initial View) -->
+        <div id="display-mode">
+            <div class="settings-card">
+                <div id="current-room-name" class="room-name-display">CS Students</div>
+
+                <div class="display-grid">
+                    
+                    <div class="setting-label">Room Name:</div>
+                    <div class="setting-value" id="display-room-name-val">CS Students</div>
+
+                    <div class="setting-label">Description:</div>
+                    <div class="setting-value" id="display-description-val">Study group for CS courses</div>
+
+                    <div class="setting-label">Members Access:</div>
+                    <div class="setting-value" id="display-access-val">Just Admins</div>
+
+                    <div class="setting-label">Privacy:</div>
+                    <div class="setting-value" id="display-privacy-val">Public</div>
+                    
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" id="edit-display-btn">Edit</button>
+            </div>
+            
+            <button id="back-btn" onclick="window.location.href='study_room_chat.html'">Back</button>
+        </div>
+        
+        
+        <!-- EDIT MODE (Form to modify settings) -->
+        <form id="edit-form" class="settings-card">
+            
+            <div class="room-name-group">
+                <label for="edit-room-name">Room name:</label>
+                <input type="text" id="edit-room-name" required>
+            </div>
+            
+            <div class="form-input-row">
+                <label for="edit-description">Description:</label>
+                <input type="text" id="edit-description">
+            </div>
+
+            <div class="form-input-row">
+                <label>Members Access:</label>
+                <div class="radio-option-group">
+                    <label><input type="radio" name="edit-access" value="all"> editing group settings: all</label>
+                    <label><input type="radio" name="edit-access" value="admins"> editing group settings: just admins</label>
+                </div>
+            </div>
+
+            <div class="form-input-row">
+                <label>Privacy:</label>
+                <div class="radio-option-group">
+                    <label><input type="radio" name="edit-privacy" value="public"> public</label>
+                    <label><input type="radio" name="edit-privacy" value="private"> private</label>
+                </div>
+            </div>
+
+            <div class="action-buttons" style="flex-direction: column;">
+                <button type="submit" id="save-btn" style="margin-bottom: 10px;">Save Changes</button>
+                <button type="button" id="cancel-edit-btn" style="background-color: #ff4d4d;">Cancel Edit</button>
+            </div>
+        </form>
+
+    </div>
+    
+    <!-- JAVASCRIPT LOGIC -->
+    <script src="/js/room_setting.js"></script>
+</body>
+</html>

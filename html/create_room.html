@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Study Room</title>
+    <!-- Combined CSS for self-contained, responsive styling -->
+    <link rel="stylesheet" href="../css/create_room.css">
+</head>
+<body>
+    <div class="room-settings-container">
+        
+        <div class="page-header">
+            Create Room
+        </div>
+        
+        <form id="create-room-form" class="settings-card">
+            
+            <!-- Room Name Input -->
+            <div class="room-name-group">
+                <label for="room-name">Room name:</label>
+                <input type="text" id="room-name" placeholder="cs students" required>
+            </div>
+            
+            <!-- Settings Grid -->
+            <div class="settings-grid">
+                
+                <!-- Row 1: Description -->
+                <div class="setting-label">Description:</div>
+                <div class="setting-value">
+                    <input type="text" id="description" placeholder="Study group for CS students" style="width: 100%; padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
+                </div>
+
+                <!-- Row 2: Access Control -->
+                <div class="setting-label">Members Access:</div>
+                <div class="setting-value">
+                    <div class="radio-option-group">
+                        <label>
+                            <input type="radio" name="access-control" value="all" checked> editing group settings: all
+                        </label>
+                        <label>
+                            <input type="radio" name="access-control" value="admins"> editing group settings: just admins
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Row 3: Privacy -->
+                <div class="setting-label">Privacy:</div>
+                <div class="setting-value">
+                    <div class="radio-option-group">
+                        <label>
+                            <input type="radio" name="privacy" value="public" checked> public
+                        </label>
+                        <label>
+                            <input type="radio" name="privacy" value="private"> private
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button type="button" id="cancel-btn">cancel</button>
+                <button type="submit" id="create-btn">Create</button>
+            </div>
+            
+        </form>
+
+    </div>
+    
+    <!-- JAVASCRIPT LOGIC -->
+    <script src="/js/create_room.js"></script>
+</body>
+</html>

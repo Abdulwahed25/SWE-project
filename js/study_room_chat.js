@@ -2,7 +2,13 @@
     const chatArea = document.getElementById('chat-area');
     const chatInput = document.getElementById('chat-input');
     const sendBtn = document.getElementById('send-btn');
+
+    // Settings menu elements
     const settingsBtn = document.getElementById('settings-btn');
+    const settingsMenu = document.getElementById('settings-menu');
+    const settingsWrap = document.getElementById('settings-wrap');
+    const openSettingsBtn = document.getElementById('open-settings-btn');
+    const addPinnedBtn = document.getElementById('add-pinned-btn');
     const pinnedRow = document.getElementById('pinned-row-list');
 
     // Ensure the chat area starts scrolled to bottom on load
@@ -63,8 +69,41 @@
       }
     });
 
-    // Settings: add pinned resource
-    settingsBtn.addEventListener('click', () => {
+      // ----------------------------
+    // Settings menu behavior
+    // ----------------------------
+    function openMenu() {
+      settingsMenu.setAttribute('aria-hidden', 'false');
+      settingsBtn.setAttribute('aria-expanded', 'true');
+      // position adjustment if menu would overflow right edge (mobile/desktop)
+      // (menu is right-aligned; for narrow screens it should be fine)
+    }
+
+    function closeMenu() {
+      settingsMenu.setAttribute('aria-hidden', 'true');
+      settingsBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    // Toggle on click
+    settingsBtn.addEventListener('click', (e) => {
+      const isHidden = settingsMenu.getAttribute('aria-hidden') === 'true';
+      if (isHidden) openMenu();
+      else closeMenu();
+
+      // Prevent click from bubbling to document (which would immediately close the menu)
+      e.stopPropagation();
+    });
+
+    // Option 1: Open Room Settings page
+    openSettingsBtn.addEventListener('click', () => {
+      closeMenu();
+      // Navigate to settings page
+      window.location.href = 'room_settings.html';
+    });
+
+    // Option 2: Add pinned resource (original behavior)
+    addPinnedBtn.addEventListener('click', () => {
+      closeMenu();
       const newLink = prompt('Enter URL or resource name to pin:');
       if (!newLink) return;
       const a = document.createElement('a');
@@ -73,10 +112,20 @@
       a.title = newLink;
       a.textContent = newLink;
       pinnedRow.appendChild(a);
-
-      // If pinned row grows too large vertically, we still have a fixed pinned height.
-      // You can implement a popup or expand action if you want to display many links.
+      // Keep user informed
       alert('Pinned resource added.');
+    });
+
+    // Click outside closes menu
+    document.addEventListener('click', (e) => {
+      // If click is inside the settings-wrap, ignore
+      if (settingsWrap.contains(e.target)) return;
+      closeMenu();
+    });
+
+    // Keyboard accessibility: Esc closes the menu
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
     });
 
     // Small navigation click effects (visual)
@@ -92,10 +141,7 @@
       });
     });
 
-    // Accessibility: focus chat area when using keyboard so arrow keys scroll it
-    chatArea.addEventListener('focus', () => {
-      // no-op, kept in case we want to announce latest message etc.
-    });
+  
 
     // Optional: handle resizing changes to keep correct scroll (e.g., keyboard on mobile)
     let resizeTimeout;

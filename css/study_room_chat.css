@@ -57,6 +57,41 @@
     .room-name { font-weight:700; font-size:1.05rem; text-align:center; flex:1; }
     .settings-btn { cursor:pointer; font-size:1.2rem; margin-left:12px; }
 
+
+
+.settings-button-wrap { position: relative; } /* container for menu positioning */
+    .settings-btn { cursor:pointer; font-size:1.2rem; margin-left:12px; background:transparent; border:none; color:var(--white); }
+
+    /* ---------- SETTINGS MENU ---------- */
+    .settings-menu {
+      position: absolute;
+      top: calc(var(--header-h) + 8px); /* appears below header */
+      right: 0;
+      transform: translateY(0);
+      background: var(--menu-bg);
+      border: 1px solid var(--menu-border);
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      min-width: 200px;
+      z-index: 1100;
+      display: none;
+      overflow: hidden;
+    }
+    .settings-menu[aria-hidden="false"] { display: block; }
+    .settings-menu button {
+      display: block;
+      width: 100%;
+      padding: 10px 12px;
+      text-align: left;
+      border: none;
+      background: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .settings-menu button:hover { background: #f5f7f8; }
+
+
+
     /* ---------- PINNED LINKS (fixed below header) ---------- */
     .pinned-links {
       position: fixed;
@@ -186,6 +221,8 @@
       .top-header, .pinned-links, .input-bar, .bottom-nav { left:50%; transform:translateX(-50%); max-width:800px; }
       .room-name{ font-size:1.15rem; }
       .chat-area { padding: 18px 20px; }
+      .settings-menu { right: 16px; top: calc(var(--header-h) + 12px); } /* adjust for desktop spacing */
+
     }
 
     /* small polish so long message doesn't push height too much in pinned bar */
